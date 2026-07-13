@@ -1,30 +1,14 @@
-# World-of-Tank-imitation-Refactoring
+# agent_harness
 
-`WOT-master`(`D3DX_2209`) 탱크 대전 게임 코드베이스를 리팩토링하고, DirectX 11을 상위 버전으로 이전하는 것을 목적으로 하는 프로젝트입니다.
+Claude Code로 AI 보조 개발을 진행할 때 사용하는 재사용 가능한 Task Delegation 워크플로우 프레임워크입니다.
 
 ---
 
-## 프로젝트 개요
+## 개요
 
-- 목적: C++ / DirectX 학습을 위해, `WOT-master` 코드베이스를 리팩토링하고 DirectX 11 → 상위 버전으로 업그레이드합니다.
-- 진행 방식: 코드는 사용자가 직접 작성하지 않고, 이 저장소의 agent_harness(Claude Code 작업 위임 워크플로우)를 통해서만 리팩토링·작성을 진행합니다.
-- 대상 코드베이스: `../WOT-master/D3DX_2209`
-- 진행 속도: 전체 계획을 한 번에 세우지 않고, 작업을 하나씩 위임하며 단계적으로 진행합니다.
-
-## 리팩토링 범위
-
-- 디렉토리/프로젝트 구조 정리 및 전체적인 아키텍처 개선
-- 기존 싱글 스레드 구조에 Multi-thread 적용
-- DirectX 11 → 상위 버전 이전
-- 빌드 시스템을 `.sln`/`.vcxproj`에서 CMake로 이전
-- 위 항목에 국한되지 않고, 알고 있는 소프트웨어 엔지니어링 지식을 최대한 활용
-- 최종 목표: 배포 가능한 `.exe` 빌드/배포 환경 구축
-
-## 개발 환경
-
-- 에디터: Visual Studio → VS Code로 전환
-- 빌드 시스템: `.sln`/`.vcxproj` → CMake로 전환 (재현 가능한 클론-빌드, CI, 에이전트 기반 헤드리스 빌드/검증을 위함)
-- 전환 시점: 리팩토링 범위의 "디렉토리/구조 정리" 작업과 함께 진행
+- Task → Brainstorming → Strategy → Implementation → Commit Report로 이어지는 작업 위임 절차를 정의합니다.
+- 특정 프로젝트의 코드베이스나 도메인 내용은 포함하지 않습니다 — 여러 프로젝트에서 공통으로 쓰는 워크플로우/규칙만 다룹니다.
+- 사용하는 프로젝트는 이 저장소를 git submodule로 연동하고, 자신의 `CLAUDE.md`에서 `@agent_harness/CLAUDE.md`로 import해서 공통 규칙을 가져다 씁니다.
 
 ## 문서 및 워크플로우
 
