@@ -30,10 +30,12 @@ The purpose of brainstorming is as follows.
 - Identify risks in the implementation process in advance and discuss how to resolve them.
 - Explore solutions to achieve the user's goals.
 
-The brainstorming document must include the following sections.
+The brainstorming document must include the following sections, in this order.
 
-- Summary — Summarize the key conclusions drawn from brainstorming in a top-heavy structure.
+- Details — The discussion itself: options considered, decisions made, and the reasoning behind them.
 - Trade-offs — State the pros and cons of each solution and the risks that must be accepted.
+- Q&A Log — Keep a running, chronological record of every question the user asks and the answer given during brainstorming, appended in the order they happen. This is in addition to the other sections, not a replacement for them.
+- Summary & Open Questions (사용자 결정 필요) — Always the last section in the document. Restate the currently confirmed conclusions in a top-heavy list, followed by the questions still awaiting a user decision. Whenever a new decision is made or a new question comes up, rewrite this section so it stays the last thing in the file — never leave stale content above it after an update.
 
 **Brainstorming is conducted bidirectionally with the user.**
 
