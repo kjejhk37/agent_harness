@@ -18,13 +18,11 @@ Request answers to the following items from the user and save the completed cont
 
 ## Step 2 — Brainstorming (Bidirectional)
 
-Before writing the brainstorming draft, move the task document from `docs/task/` into `docs/brainstorming/`.
-This keeps `docs/task/` as a queue of only unstarted tasks.
+The task document stays in `docs/task/` — do not move it.
 
 Write a brainstorming draft and save it as `docs/brainstorming/summary_YYYYMMDD_HHMM.md`.
 
-- Write the relative path of the task .md at the top of the brainstorming document.
-- The task .md is now located in `docs/brainstorming/`, so reference it as a sibling file.
+- Write the relative path of the task .md at the top of the brainstorming document (e.g. `../task/summary_YYYYMMDD_HHMM.md`).
 
 The purpose of brainstorming is as follows.
 

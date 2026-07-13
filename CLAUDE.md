@@ -82,7 +82,7 @@ Maintain the internal structure as follows.
 
 ```
 docs/archive/summary_YYYYMMDD/
-  brainstorming/task_YYYYMMDD_HHMM.md
+  task/summary_YYYYMMDD_HHMM.md
   brainstorming/summary_YYYYMMDD_HHMM.md
   strategy/summary_YYYYMMDD_HHMM.md
   commit/summary_YYYYMMDD_HHMM.md
@@ -112,7 +112,7 @@ Issues in the commit report follow a 3-stage lifecycle.
 
 ```
 - [IN PROGRESS] Application crashes on startup when config file is missing.
-  → task: ../brainstorming/task_summary_YYYYMMDD_HHMM.md
+  → task: ../task/summary_YYYYMMDD_HHMM.md
 
 - [RESOLVED] Application crashes on startup when config file is missing.
   → resolved in: ../strategy/summary_YYYYMMDD_HHMM.md
@@ -120,7 +120,8 @@ Issues in the commit report follow a 3-stage lifecycle.
 
 If the user requests a session recovery, read the following documents in order and present recommendations before proceeding.
 
-- `docs/brainstorming/` — Review the goals and trade-offs that were established. The task .md is also located here.
+- `docs/task/` — Review the original task document.
+- `docs/brainstorming/` — Review the goals and trade-offs that were established.
 - `docs/strategy/` — Identify which checklist items were completed and which remain.
 - `docs/commit/` — Review the implementation results and any outstanding issues by severity.
 
