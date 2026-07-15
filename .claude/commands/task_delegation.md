@@ -34,7 +34,7 @@ The brainstorming document must include the following sections, in this order.
 
 - Details — The discussion itself: options considered, decisions made, and the reasoning behind them.
 - Trade-offs — State the pros and cons of each solution and the risks that must be accepted.
-- Q&A Log — Keep a running, chronological record of every question the user asks and the answer given during brainstorming, appended in the order they happen. This is in addition to the other sections, not a replacement for them.
+- Q&A Log — Keep a running, chronological record of every question the user asks and the answer given during brainstorming, appended in the order they happen. This includes simple/factual/definitional questions (e.g. "what does this license term mean?"), not only questions that lead to a decision — log the question as asked and the answer as given, immediately when it happens, not only in retrospect when the user asks you to. This is in addition to the other sections, not a replacement for them.
 - Summary & Open Questions (사용자 결정 필요) — Always the last section in the document. Restate the currently confirmed conclusions in a top-heavy list, followed by the questions still awaiting a user decision. Whenever a new decision is made or a new question comes up, rewrite this section so it stays the last thing in the file — never leave stale content above it after an update.
 
 **Brainstorming is conducted bidirectionally with the user.**
