@@ -28,6 +28,17 @@ Inspect the implemented code against the following criteria and report each find
 Report findings using the issue severity grades defined in CLAUDE.md.
 Present the Stage 1 report to the user and request feedback before proceeding to Stage 2.
 
+### Resolving Findings
+
+Group findings into two buckets when presenting them.
+
+- **Immediately resolvable** — the finding is about code developed in this task, and fixing it does not require work beyond this task's already-developed scope. Request one blanket approval to resolve all of these together (no need to ask about each finding individually), then fix them directly, rebuild/retest, and mark them `[RESOLVED]` in the review document.
+- **Needs separate handling** — do not auto-resolve; call these out as their own distinct list when either:
+  1. The problem originates outside this task's developed scope (pre-existing code, another task's output).
+  2. Resolving it would require work beyond what this task developed (scope expansion).
+
+  For these, follow the "unexpected situation" rule in CLAUDE.md's Collaboration Principles — do not fix inline; present them separately and let the user decide whether to start a new task delegation cycle.
+
 ---
 
 ## Stage 2 — Diagram Generation
