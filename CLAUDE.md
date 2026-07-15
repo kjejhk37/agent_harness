@@ -79,7 +79,10 @@ docs/archive/{slug}_YYYYMMDD/
   brainstorming/{slug}_YYYYMMDD_HHMM.md
   strategy/{slug}_YYYYMMDD_HHMM.md
   commit/{slug}_YYYYMMDD_HHMM.md
+  review/{slug}_YYYYMMDD_HHMM.md   (if a code_review.md report was written for this cycle)
 ```
+
+`docs/dependency/` is excluded from archiving. Unlike task/brainstorming/strategy/commit/review, a dependency evaluation documents a decision that stays relevant for as long as the project depends on that library — not just for the cycle that introduced it. Keep `docs/dependency/*.md` at its top-level location permanently, as a cumulative project-wide registry, even after the cycle that produced it is archived.
 
 A cycle is considered complete when all of the following conditions are met.
 
