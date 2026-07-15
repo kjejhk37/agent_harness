@@ -53,22 +53,32 @@ Every function and class comment must include the following.
 
 ---
 
+# Document Naming Convention
+
+Every workflow document (task, brainstorming, strategy, commit, review) is named `{slug}_YYYYMMDD_HHMM.md`, where `{slug}` is a short content summary of the work cycle's topic (e.g. `렌더러_분기`, `main진입점_설정`) — never the literal word "summary".
+
+- Derive `{slug}` from the Task Document's Purpose when writing the task .md.
+- Reuse the identical `{slug}` for every later-stage document (brainstorming/strategy/commit/review) in the same work cycle, so cross-reference links and the archive folder name stay traceable to one cycle at a glance.
+- The archive folder name reuses the same `{slug}`: `docs/archive/{slug}_YYYYMMDD/`.
+
+---
+
 # Document Archiving
 
 When a full work cycle is complete — task, brainstorming, strategy, implementation, and commit report all finalized — move the related documents into an archive folder to prevent Claude from loading unnecessary context during session recovery.
 
 Archive by preserving the folder structure as a group so that relative paths between documents remain intact.
 
-Archive destination: `docs/archive/summary_YYYYMMDD/`
+Archive destination: `docs/archive/{slug}_YYYYMMDD/`
 
 Maintain the internal structure as follows.
 
 ```
-docs/archive/summary_YYYYMMDD/
-  task/summary_YYYYMMDD_HHMM.md
-  brainstorming/summary_YYYYMMDD_HHMM.md
-  strategy/summary_YYYYMMDD_HHMM.md
-  commit/summary_YYYYMMDD_HHMM.md
+docs/archive/{slug}_YYYYMMDD/
+  task/{slug}_YYYYMMDD_HHMM.md
+  brainstorming/{slug}_YYYYMMDD_HHMM.md
+  strategy/{slug}_YYYYMMDD_HHMM.md
+  commit/{slug}_YYYYMMDD_HHMM.md
 ```
 
 A cycle is considered complete when all of the following conditions are met.
@@ -95,10 +105,10 @@ Issues in the commit report follow a 3-stage lifecycle.
 
 ```
 - [IN PROGRESS] Application crashes on startup when config file is missing.
-  → task: ../task/summary_YYYYMMDD_HHMM.md
+  → task: ../task/{slug}_YYYYMMDD_HHMM.md
 
 - [RESOLVED] Application crashes on startup when config file is missing.
-  → resolved in: ../strategy/summary_YYYYMMDD_HHMM.md
+  → resolved in: ../strategy/{slug}_YYYYMMDD_HHMM.md
 ```
 
 If the user requests a session recovery, read the following documents in order and present recommendations before proceeding.

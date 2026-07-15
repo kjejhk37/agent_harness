@@ -6,7 +6,7 @@ When a task is delegated by the user, follow the steps below in order.
 
 ## Step 1 — Write the Task Document
 
-Request answers to the following items from the user and save the completed content as `docs/task/summary_YYYYMMDD_HHMM.md`.
+Request answers to the following items from the user and save the completed content as `docs/task/{slug}_YYYYMMDD_HHMM.md`, where `{slug}` is a short content summary of the task's Purpose (see the Document Naming Convention in `agent_harness/CLAUDE.md`) — not the literal word "summary". Reuse this same `{slug}` for every later-stage document in this work cycle (Steps 2, 3, 5).
 
 - Purpose (required)
 - Author (optional)
@@ -20,9 +20,9 @@ Request answers to the following items from the user and save the completed cont
 
 The task document stays in `docs/task/` — do not move it.
 
-Write a brainstorming draft and save it as `docs/brainstorming/summary_YYYYMMDD_HHMM.md`.
+Write a brainstorming draft and save it as `docs/brainstorming/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the task document.
 
-- Write the relative path of the task .md at the top of the brainstorming document (e.g. `../task/summary_YYYYMMDD_HHMM.md`).
+- Write the relative path of the task .md at the top of the brainstorming document (e.g. `../task/{slug}_YYYYMMDD_HHMM.md`).
 
 The purpose of brainstorming is as follows.
 
@@ -48,7 +48,7 @@ The brainstorming document must include the following sections, in this order.
 
 ## Step 3 — Write the Strategy Document (Bidirectional)
 
-Write a strategy document based on the brainstorming results and save it as `docs/strategy/summary_YYYYMMDD_HHMM.md`.
+Write a strategy document based on the brainstorming results and save it as `docs/strategy/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the task/brainstorming documents.
 
 - Write the relative path of the brainstorming .md at the top of the strategy document.
 
@@ -98,7 +98,7 @@ After the code review (or if the user skipped it), ask:
 
 ## Step 5 — Implementation Result and Issue Report
 
-After implementation is complete, write a result report as `docs/commit/summary_YYYYMMDD_HHMM.md`.
+After implementation is complete, write a result report as `docs/commit/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the rest of the work cycle. Write the relative path of the strategy .md at the top of the commit document (e.g. `../strategy/{slug}_YYYYMMDD_HHMM.md`).
 
 - Report only "errors identified in the current state," regardless of whether they relate to newly added features.
 - Write the report in a top-heavy structure, one sentence per bullet point.
