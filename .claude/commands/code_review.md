@@ -26,6 +26,13 @@ Inspect the implemented code against the following criteria and report each find
 - Every function and class has a comment that includes: author, description, input, output, notes, date.
 
 Report findings using the issue severity grades defined in CLAUDE.md.
+For each finding, also state a proposed resolution (해결 방안) — a concrete fix approach, not just a restatement of the problem.
+
+```
+- [GRADE] Description of the issue
+  → 해결 방안: Concrete fix approach.
+```
+
 Present the Stage 1 report to the user and request feedback before proceeding to Stage 2.
 
 ### Resolving Findings
