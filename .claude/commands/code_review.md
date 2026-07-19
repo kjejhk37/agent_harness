@@ -26,11 +26,14 @@ Inspect the implemented code against the following criteria and report each find
 - Every function and class has a comment that includes: author, description, input, output, notes, date.
 
 Report findings using the issue severity grades defined in CLAUDE.md.
-For each finding, also state a proposed resolution (해결 방안) — a concrete fix approach, not just a restatement of the problem.
+For each finding, also state a proposed resolution — a concrete fix approach, not just a restatement of the problem.
+Follow the `.md` Writing Rules in this file (one sentence per line, bullet points for lists) — do not collapse a finding into a single run-on paragraph.
 
 ```
-- [GRADE] Description of the issue
-  → 해결 방안: Concrete fix approach.
+- [GRADE] Description of the issue.
+  - Supporting detail, one sentence per line.
+  - **[해결 방안]**
+    - Concrete fix approach, one sentence per line.
 ```
 
 Present the Stage 1 report to the user and request feedback before proceeding to Stage 2.
