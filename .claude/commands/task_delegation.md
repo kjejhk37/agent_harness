@@ -6,7 +6,7 @@ When a task is delegated by the user, follow the steps below in order.
 
 ## Step 1 — Write the Task Document
 
-Request answers to the following items from the user and save the completed content as `docs/task/summary_YYYYMMDD_HHMM.md`.
+Request answers to the following items from the user and save the completed content as `docs/task/{slug}_YYYYMMDD_HHMM.md`, where `{slug}` is a short content summary of the task's Purpose (see the Document Naming Convention in `agent_harness/CLAUDE.md`) — not the literal word "summary". Reuse this same `{slug}` for every later-stage document in this work cycle (Steps 2, 3, 5).
 
 - Purpose (required)
 - Author (optional)
@@ -20,9 +20,9 @@ Request answers to the following items from the user and save the completed cont
 
 The task document stays in `docs/task/` — do not move it.
 
-Write a brainstorming draft and save it as `docs/brainstorming/summary_YYYYMMDD_HHMM.md`.
+Write a brainstorming draft and save it as `docs/brainstorming/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the task document.
 
-- Write the relative path of the task .md at the top of the brainstorming document (e.g. `../task/summary_YYYYMMDD_HHMM.md`).
+- Write the relative path of the task .md at the top of the brainstorming document (e.g. `../task/{slug}_YYYYMMDD_HHMM.md`).
 
 The purpose of brainstorming is as follows.
 
@@ -34,7 +34,7 @@ The brainstorming document must include the following sections, in this order.
 
 - Details — The discussion itself: options considered, decisions made, and the reasoning behind them.
 - Trade-offs — State the pros and cons of each solution and the risks that must be accepted.
-- Q&A Log — Keep a running, chronological record of every question the user asks and the answer given during brainstorming, appended in the order they happen. This is in addition to the other sections, not a replacement for them.
+- Q&A Log — Keep a running, chronological record of every question the user asks and the answer given during brainstorming, appended in the order they happen. This includes simple/factual/definitional questions (e.g. "what does this license term mean?"), not only questions that lead to a decision — log the question as asked and the answer as given, immediately when it happens, not only in retrospect when the user asks you to. This is in addition to the other sections, not a replacement for them.
 - Summary & Open Questions (사용자 결정 필요) — Always the last section in the document. Restate the currently confirmed conclusions in a top-heavy list, followed by the questions still awaiting a user decision. Whenever a new decision is made or a new question comes up, rewrite this section so it stays the last thing in the file — never leave stale content above it after an update.
 
 **Brainstorming is conducted bidirectionally with the user.**
@@ -48,7 +48,7 @@ The brainstorming document must include the following sections, in this order.
 
 ## Step 3 — Write the Strategy Document (Bidirectional)
 
-Write a strategy document based on the brainstorming results and save it as `docs/strategy/summary_YYYYMMDD_HHMM.md`.
+Write a strategy document based on the brainstorming results and save it as `docs/strategy/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the task/brainstorming documents.
 
 - Write the relative path of the brainstorming .md at the top of the strategy document.
 
@@ -99,7 +99,7 @@ After the code review (or if the user skipped it), ask:
 
 ## Step 5 — Implementation Result and Issue Report
 
-After implementation is complete, write a result report as `docs/commit/summary_YYYYMMDD_HHMM.md`.
+After implementation is complete, write a result report as `docs/commit/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the rest of the work cycle. Write the relative path of the strategy .md at the top of the commit document (e.g. `../strategy/{slug}_YYYYMMDD_HHMM.md`).
 
 - Report only "errors identified in the current state," regardless of whether they relate to newly added features.
 - Write the report in a top-heavy structure, one sentence per bullet point.

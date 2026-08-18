@@ -26,7 +26,28 @@ Inspect the implemented code against the following criteria and report each find
 - Every function and class has a comment that includes: author, description, input, output, notes, date.
 
 Report findings using the issue severity grades defined in CLAUDE.md.
+For each finding, also state a proposed resolution — a concrete fix approach, not just a restatement of the problem.
+Follow the `.md` Writing Rules in this file (one sentence per line, bullet points for lists) — do not collapse a finding into a single run-on paragraph.
+
+```
+- [GRADE] Description of the issue.
+  - Supporting detail, one sentence per line.
+  - **[해결 방안]**
+    - Concrete fix approach, one sentence per line.
+```
+
 Present the Stage 1 report to the user and request feedback before proceeding to Stage 2.
+
+### Resolving Findings
+
+Group findings into two buckets when presenting them.
+
+- **Immediately resolvable** — the finding is about code developed in this task, and fixing it does not require work beyond this task's already-developed scope. Request one blanket approval to resolve all of these together (no need to ask about each finding individually), then fix them directly, rebuild/retest, and mark them `[RESOLVED]` in the review document.
+- **Needs separate handling** — do not auto-resolve; call these out as their own distinct list when either:
+  1. The problem originates outside this task's developed scope (pre-existing code, another task's output).
+  2. Resolving it would require work beyond what this task developed (scope expansion).
+
+  For these, follow the "unexpected situation" rule in CLAUDE.md's Collaboration Principles — do not fix inline; present them separately and let the user decide whether to start a new task delegation cycle.
 
 ---
 
@@ -77,5 +98,5 @@ Use inline CSS only — no external dependencies.
 
 ## Output
 
-Save the full review result (Stage 1 + Stage 2) as `docs/review/summary_YYYYMMDD_HHMM.md`.
+Save the full review result (Stage 1 + Stage 2) as `docs/review/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the reviewed work cycle.
 Write the relative path of the strategy .md that was reviewed at the top of the document.
