@@ -27,8 +27,23 @@ If an unexpected situation arises during implementation — such as the need to 
 # Custom Commands
 
 - Task Delegation Workflow: [`.claude/commands/task_delegation.md`](.claude/commands/task_delegation.md)
+- Team Task Delegation Workflow: [`.claude/commands/team_task_delegation.md`](.claude/commands/team_task_delegation.md) — Cross-repo coordination between `platform` / `graphics` / `projects` repos. Independent of Task Delegation Workflow; only triggered from that workflow's Step 3 when a Strategy checklist item is tagged `[platform]` / `[graphics]` / `[mixed]`.
 - Git Workflow: [`.claude/commands/git_workflow.md`](.claude/commands/git_workflow.md) — Reference only if the file has been written.
 - Dependency Evaluation: [`.claude/commands/dependency_eval.md`](.claude/commands/dependency_eval.md)
+
+---
+
+# Cross-Repo Roles (Team Task Delegation)
+
+This repository's consuming projects form a one-directional dependency chain: `platform → graphics → projects`, linked via git submodules (`projects` submodules `graphics` and `platform`; `graphics` submodules `platform`).
+
+A repo's role in Team Task Delegation depends on which cross-repo item is being handled, not on which "department" it is — the same repo can be a requester in one exchange and a target in another.
+
+- `platform` — always a target, never a requester (nothing is upstream of it).
+- `graphics` — a target when `projects` requests from it; a requester when it needs `platform` to complete a `[mixed]` item (see `team_task_delegation.md` Step 5).
+- `projects` — always a requester toward `platform`/`graphics`, never a target (nothing is downstream of it).
+
+Whichever role applies for a given exchange, follow `team_task_delegation.md` Steps 1–4 for the requester side and Step 3 for the target side.
 
 ---
 

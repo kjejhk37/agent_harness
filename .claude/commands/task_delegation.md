@@ -62,6 +62,7 @@ The strategy document must include an implementation checklist.
 
 - Write each item in `[ ]` format.
 - Break the checklist down into the smallest implementable units.
+- If this repo has cross-repo dependencies (see `CLAUDE.md` § Cross-Repo Roles), tag each item `[self]` / `[platform]` / `[graphics]` / `[mixed]` and resolve every non-`[self]` item via `.claude/commands/team_task_delegation.md` before finalizing this document.
 
 **The strategy document is reviewed bidirectionally with the user.**
 
