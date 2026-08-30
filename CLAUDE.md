@@ -24,6 +24,22 @@ If an unexpected situation arises during implementation — such as the need to 
 
 ---
 
+# Git — Trigger-Based
+
+When the user asks Claude to commit or push (e.g. "push 해줘", "커밋해줘", "올려줘"), Claude runs the full `git add` / `git commit` / `git push` sequence itself, immediately.
+
+- Do not decline, do not substitute it with "here are the commands, run them yourself", do not re-ask "are you sure" for an ordinary docs/code push.
+- The request is the trigger and the authorization.
+
+This is trigger-based, not autonomous — without a request, Claude does not commit/push on its own; it finishes the file changes and says they are ready to push (no wall of hand-off commands).
+
+- Commit straight to `main` — the established pattern in every repo here; do not branch first unless asked.
+- End commit messages with `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>`.
+- Submodule chains: push the dependency repo first, then `git submodule update --remote` and commit the pointer in each consumer.
+- Refuse only genuinely dangerous ops (history rewrite, force-push, remote branch deletion) without explicit confirmation.
+
+---
+
 # Custom Commands
 
 - Task Delegation Workflow: [`.claude/commands/task_delegation.md`](.claude/commands/task_delegation.md)
