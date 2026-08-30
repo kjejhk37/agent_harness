@@ -30,6 +30,7 @@ If an unexpected situation arises during implementation — such as the need to 
 - Team Task Delegation Workflow: [`.claude/commands/team_task_delegation.md`](.claude/commands/team_task_delegation.md) — Cross-repo coordination between `platform` / `graphics` / `projects` repos. Independent of Task Delegation Workflow; only triggered from that workflow's Step 3 when a Strategy checklist item is tagged `[platform]` / `[graphics]` / `[mixed]`.
 - Git Workflow: [`.claude/commands/git_workflow.md`](.claude/commands/git_workflow.md) — Reference only if the file has been written.
 - Dependency Evaluation: [`.claude/commands/dependency_eval.md`](.claude/commands/dependency_eval.md)
+- Diagram Delegation: [`.claude/commands/diagram_delegation.md`](.claude/commands/diagram_delegation.md) — User-triggered workflow that produces a dated architecture-diagram document (`docs/architecture/diagrams/{slug}_YYYYMMDD_HHMM.md`), with an optional macro architecture review as Step 3. Independent of Task Delegation Workflow; never runs automatically.
 
 ---
 
@@ -98,6 +99,8 @@ docs/archive/{slug}_YYYYMMDD/
 ```
 
 `docs/dependency/` is excluded from archiving. Unlike task/brainstorming/strategy/commit/review, a dependency evaluation documents a decision that stays relevant for as long as the project depends on that library — not just for the cycle that introduced it. Keep `docs/dependency/*.md` at its top-level location permanently, as a cumulative project-wide registry, even after the cycle that produced it is archived.
+
+`docs/architecture/` is excluded from archiving for the same reason. It holds permanent reference material: hand-maintained architecture notes, and the dated diagram snapshots produced by `diagram_delegation.md` under `docs/architecture/diagrams/`. The diagram snapshots are a cumulative time series — each run adds a new dated file and never overwrites or archives an older one, so that silent architectural drift stays visible in diff.
 
 A cycle is considered complete when all of the following conditions are met.
 
