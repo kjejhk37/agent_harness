@@ -46,7 +46,7 @@ This is trigger-based, not autonomous — without a request, Claude does not com
 - Team Task Delegation Workflow: [`.claude/commands/team_task_delegation.md`](.claude/commands/team_task_delegation.md) — Cross-repo coordination between `platform` / `graphics` / `projects` repos. Independent of Task Delegation Workflow; only triggered from that workflow's Step 3 when a Strategy checklist item is tagged `[platform]` / `[graphics]` / `[mixed]`.
 - Git Workflow: [`.claude/commands/git_workflow.md`](.claude/commands/git_workflow.md) — Reference only if the file has been written.
 - Dependency Evaluation: [`.claude/commands/dependency_eval.md`](.claude/commands/dependency_eval.md)
-- Diagram Delegation: [`.claude/commands/diagram_delegation.md`](.claude/commands/diagram_delegation.md) — User-triggered workflow that produces a dated architecture-diagram document (`docs/architecture/diagrams/{slug}_YYYYMMDD_HHMM.md`), with an optional macro architecture review as Step 3. Independent of Task Delegation Workflow; never runs automatically.
+- Diagram Delegation: [`.claude/commands/diagram_delegation.md`](.claude/commands/diagram_delegation.md) — User-triggered workflow that produces a dated architecture-diagram document (`docs/DiagramDelegation/diagrams/{slug}_YYYYMMDD_HHMM.md`), with an optional macro architecture review as Step 3. Independent of Task Delegation Workflow; never runs automatically.
 
 ---
 
@@ -85,13 +85,44 @@ Every function and class comment must include the following.
 
 ---
 
+# Docs Directory Layout
+
+`docs/` is organized by which delegator produced the content, not flatly.
+
+```
+docs/
+  dependency/                              (top-level — see Dependency Evaluation below)
+
+  TaskDelegation/
+    task/
+    brainstorming/
+    strategy/
+    commit/
+    review/
+    architecture/                          (hand-maintained architecture notes tied to this repo's strategies)
+    archive/{slug}_YYYYMMDD/
+
+  TeamTaskDelegation/
+    inbox/
+    outbox/
+
+  DiagramDelegation/
+    diagrams/
+```
+
+- `dependency/` stays directly under `docs/`, not nested under any delegator folder — a dependency evaluation is project/repo-scoped rather than tied to one delegator's workflow.
+- `TeamTaskDelegation/` holds only the cross-repo request/response exchange (`inbox/`/`outbox/`). Once a request is received, the target repo processes it as its own `TaskDelegation` cycle (task/brainstorming/strategy/commit/review) — that content lives under `TaskDelegation/`, never duplicated under `TeamTaskDelegation/`, regardless of whether the cycle was triggered by a normal user request or by an inbound request document.
+- `DiagramDelegation/diagrams/` holds only the dated diagram snapshots that `diagram_delegation.md` produces. It is never archived — see Document Archiving below.
+
+---
+
 # Document Naming Convention
 
 Every workflow document (task, brainstorming, strategy, commit, review) is named `{slug}_YYYYMMDD_HHMM.md`, where `{slug}` is a short content summary of the work cycle's topic (e.g. `렌더러_분기`, `main진입점_설정`) — never the literal word "summary".
 
 - Derive `{slug}` from the Task Document's Purpose when writing the task .md.
 - Reuse the identical `{slug}` for every later-stage document (brainstorming/strategy/commit/review) in the same work cycle, so cross-reference links and the archive folder name stay traceable to one cycle at a glance.
-- The archive folder name reuses the same `{slug}`: `docs/archive/{slug}_YYYYMMDD/`.
+- The archive folder name reuses the same `{slug}`: `docs/TaskDelegation/archive/{slug}_YYYYMMDD/`.
 
 ---
 
@@ -101,12 +132,12 @@ When a full work cycle is complete — task, brainstorming, strategy, implementa
 
 Archive by preserving the folder structure as a group so that relative paths between documents remain intact.
 
-Archive destination: `docs/archive/{slug}_YYYYMMDD/`
+Archive destination: `docs/TaskDelegation/archive/{slug}_YYYYMMDD/`
 
 Maintain the internal structure as follows.
 
 ```
-docs/archive/{slug}_YYYYMMDD/
+docs/TaskDelegation/archive/{slug}_YYYYMMDD/
   task/{slug}_YYYYMMDD_HHMM.md
   brainstorming/{slug}_YYYYMMDD_HHMM.md
   strategy/{slug}_YYYYMMDD_HHMM.md
@@ -116,7 +147,7 @@ docs/archive/{slug}_YYYYMMDD/
 
 `docs/dependency/` is excluded from archiving. Unlike task/brainstorming/strategy/commit/review, a dependency evaluation documents a decision that stays relevant for as long as the project depends on that library — not just for the cycle that introduced it. Keep `docs/dependency/*.md` at its top-level location permanently, as a cumulative project-wide registry, even after the cycle that produced it is archived.
 
-`docs/architecture/` is excluded from archiving for the same reason. It holds permanent reference material: hand-maintained architecture notes, and the dated diagram snapshots produced by `diagram_delegation.md` under `docs/architecture/diagrams/`. The diagram snapshots are a cumulative time series — each run adds a new dated file and never overwrites or archives an older one, so that silent architectural drift stays visible in diff.
+`docs/TaskDelegation/architecture/` and `docs/DiagramDelegation/diagrams/` are excluded from archiving for the same reason. The former holds hand-maintained architecture notes; the latter holds the dated diagram snapshots produced by `diagram_delegation.md`. Both are permanent reference material — the diagram snapshots in particular are a cumulative time series, where each run adds a new dated file and never overwrites or archives an older one, so that silent architectural drift stays visible in diff.
 
 A cycle is considered complete when all of the following conditions are met.
 
@@ -126,13 +157,13 @@ A cycle is considered complete when all of the following conditions are met.
 Mark an issue as `[DEFERRED]` when the user explicitly decides to postpone it to a future cycle.
 
 During session recovery, read only the active documents in `docs/`.
-Documents in `docs/archive/` are referenced only when the user explicitly requests it.
+Documents in `docs/TaskDelegation/archive/` are referenced only when the user explicitly requests it.
 
 ---
 
 # Session Recovery
 
-By default, the user reviews the implementation report in `docs/commit/` and delegates the next task.
+By default, the user reviews the implementation report in `docs/TaskDelegation/commit/` and delegates the next task.
 
 Issues in the commit report follow a 3-stage lifecycle.
 
@@ -150,10 +181,10 @@ Issues in the commit report follow a 3-stage lifecycle.
 
 If the user requests a session recovery, read the following documents in order and present recommendations before proceeding.
 
-- `docs/task/` — Review the original task document.
-- `docs/brainstorming/` — Review the goals and trade-offs that were established.
-- `docs/strategy/` — Identify which checklist items were completed and which remain.
-- `docs/commit/` — Review the implementation results and any outstanding issues by severity.
+- `docs/TaskDelegation/task/` — Review the original task document.
+- `docs/TaskDelegation/brainstorming/` — Review the goals and trade-offs that were established.
+- `docs/TaskDelegation/strategy/` — Identify which checklist items were completed and which remain.
+- `docs/TaskDelegation/commit/` — Review the implementation results and any outstanding issues by severity.
 
 Based on the above, recommend the next action to the user.
 Do not begin any work until the user confirms the direction.

@@ -18,7 +18,7 @@ When transitioning to team development, refer to the team considerations in each
 
 ## Commit Rules
 
-Refer to the implementation result reports in the `docs/commit/` folder for commit content.
+Refer to the implementation result reports in the `docs/TaskDelegation/commit/` folder for commit content.
 
 ---
 

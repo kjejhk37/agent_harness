@@ -85,7 +85,7 @@ Step 1에서 이번 실행에 어떤 뷰를 포함할지 정한다.
 - 뷰별 아트 티어 — Reference A + B로 제안하고 사용자가 확정.
 
 확정된 범위에서 `{slug}`를 도출한다 (예: `전체아키텍처`, `collision서브시스템`).
-새 문서 `docs/architecture/diagrams/{slug}_YYYYMMDD_HHMM.md`를 열고 확정된 계획을 첫 섹션으로 쓴다.
+새 문서 `docs/DiagramDelegation/diagrams/{slug}_YYYYMMDD_HHMM.md`를 열고 확정된 계획을 첫 섹션으로 쓴다.
 계획을 공유하고, 피드백을 받고, 수정하고, 사용자 승인 후에만 다음으로 넘어간다.
 
 ---
@@ -122,7 +122,7 @@ Step 2에서 사용자가 원할 때만 진행한다.
 일치성 검사:
 
 - 다이어그램의 각 노드와 엣지를 실제 코드와 대조하고, 맞지 않는 것을 표시한다.
-- `docs/architecture/diagrams/`의 직전 문서와 비교하고, commit 리포트에 드러나지 않은 채 조용히 바뀐 것을 짚어낸다.
+- `docs/DiagramDelegation/diagrams/`의 직전 문서와 비교하고, commit 리포트에 드러나지 않은 채 조용히 바뀐 것을 짚어낸다.
 
 적합성 리뷰:
 
@@ -140,7 +140,7 @@ Step 2에서 사용자가 원할 때만 진행한다.
 
 ## 산출물
 
-하나의 날짜별 문서 `docs/architecture/diagrams/{slug}_YYYYMMDD_HHMM.md`. 다음을 담는다.
+하나의 날짜별 문서 `docs/DiagramDelegation/diagrams/{slug}_YYYYMMDD_HHMM.md`. 다음을 담는다.
 
 - Step 1의 범위·표현 계획,
 - 뷰별 모델 목록과 다이어그램,
@@ -148,7 +148,7 @@ Step 2에서 사용자가 원할 때만 진행한다.
 
 영구 보관.
 archive하지 않고, 덮어쓰지 않는다.
-실행할 때마다 새 날짜별 파일이 생기므로, `docs/architecture/diagrams/`는 시계열로 누적되어 조용한 아키텍처 드리프트를 diff로 드러낸다.
+실행할 때마다 새 날짜별 파일이 생기므로, `docs/DiagramDelegation/diagrams/`는 시계열로 누적되어 조용한 아키텍처 드리프트를 diff로 드러낸다.
 
 ---
 
