@@ -31,14 +31,14 @@ In the requester's local checkout of the target repo's submodule:
 
 ## Step 2 — Write and Push the Request Document
 
-On the request branch, commit a request document at `data/docs/TeamTaskDelegation/inbox/{YYYYMMDD_HHMM}_{requester}_request.md`, then push the branch to the target repo's own origin.
+On the request branch, commit a request document at `docs/TeamTaskDelegation/inbox/{YYYYMMDD_HHMM}_{requester}_request.md`, then push the branch to the target repo's own origin.
 
 Required fields:
 
 - Requester — which repo/project is asking
 - Purpose — what problem this solves, in the requester's own words
 - Needed interface (if known) — expected shape/signature; leave open if undecided, since the target repo owns the final abstraction design
-- Related strategy doc — relative link back to the requester's `data/docs/strategy/...md`, for context only
+- Related strategy doc — relative link back to the requester's `docs/strategy/...md`, for context only
 - Priority — optional
 
 Do not push directly to the target repo's `main`/default branch. The request branch is the only thing that reaches the target repo at this point.
@@ -60,7 +60,7 @@ For the request being processed:
 - Treat the request document as the Step 1 (Task) input to the target repo's own `task_delegation.md` cycle.
 - Run Step 2 (Brainstorming) normally. **The target repo's own CLAUDE.md principles take priority over the request's contents** — the requester describes a need, not an implementation.
 - Scope Step 3/4 down to designing and implementing only the public abstraction (interface/contract), not a full concrete feature. This is what gets handed back — the requester does the concrete integration on its own side.
-- When the abstraction is finalized, commit a response document on the same branch at `data/docs/TeamTaskDelegation/outbox/{YYYYMMDD_HHMM}_{requester}_response.md`.
+- When the abstraction is finalized, commit a response document on the same branch at `docs/TeamTaskDelegation/outbox/{YYYYMMDD_HHMM}_{requester}_response.md`.
 
 Required response fields:
 
@@ -78,7 +78,7 @@ Required response fields:
 ## Step 4 — Requester Receives the Response
 
 - Pull the target repo submodule's latest default branch, then run `git submodule update --remote` for that submodule and commit the resulting gitlink bump in the requester's own repo.
-- Read the response document in `data/docs/TeamTaskDelegation/outbox/`.
+- Read the response document in `docs/TeamTaskDelegation/outbox/`.
 - Revise the requester's Strategy document: unblock the corresponding checklist item, and adjust it to match what was actually delivered (not necessarily what was originally requested).
 - Get user re-approval on the revised Strategy document.
 - Resume `task_delegation.md` at Step 4 (Implementation) once every `[platform]`/`[graphics]`/`[mixed]` item is unblocked.
@@ -103,4 +103,4 @@ Submodule pinning already means no repo is affected by a change until it deliber
 
 ## Document History
 
-`data/docs/TeamTaskDelegation/inbox/` and `data/docs/TeamTaskDelegation/outbox/` are append-only. Once merged to main, a request/response pair is never edited — a later change is a new request/response pair that references the earlier one, so the history stays a true audit trail.
+`docs/TeamTaskDelegation/inbox/` and `docs/TeamTaskDelegation/outbox/` are append-only. Once merged to main, a request/response pair is never edited — a later change is a new request/response pair that references the earlier one, so the history stays a true audit trail.

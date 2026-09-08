@@ -115,12 +115,12 @@ Client          ServiceA         ServiceB
 
 ### HTML format
 
-Save as `data/docs/review/diagram_YYYYMMDD_HHMM.html`.
+Save as `docs/review/diagram_YYYYMMDD_HHMM.html`.
 Use inline CSS only — no external dependencies.
 
 ---
 
 ## Output
 
-Save the full review result (Stage 1 + Stage 2) as `data/docs/review/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the reviewed work cycle.
+Save the full review result (Stage 1 + Stage 2) as `docs/review/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the reviewed work cycle.
 Write the relative path of the strategy .md that was reviewed at the top of the document.

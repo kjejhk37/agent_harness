@@ -97,7 +97,7 @@ When **every** marker in the cycle is approved, do the following as one pass.
 
 ### When Feedback Is Given
 
-Record the feedback in `data/docs/marker_review/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the rest of the work cycle.
+Record the feedback in `docs/marker_review/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the rest of the work cycle.
 Write the relative path of the reviewed strategy .md at the top of the document.
 
 There are two routes from here, decided by the size of the change the feedback requires.

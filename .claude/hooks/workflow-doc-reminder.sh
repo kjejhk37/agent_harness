@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Author      : Myunggyun Kim (claude_workflow)
-# Description : UserPromptSubmit 훅. data/docs/task · data/docs/brainstorming · data/docs/strategy 에
+# Description : UserPromptSubmit 훅. docs/task · docs/brainstorming · docs/strategy 에
 #               활성 워크플로 문서가 있으면 그 목록과 갱신 지시를 매 턴 주입한다.
 #               문서가 하나도 없으면 아무것도 출력하지 않는다(무소음).
 # Input       : stdin 으로 훅 이벤트 JSON (사용하지 않음). CLAUDE_PROJECT_DIR 환경변수.
@@ -14,7 +14,7 @@ set -u
 
 cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || exit 0
 
-docs=$(ls data/docs/task/*.md data/docs/brainstorming/*.md data/docs/strategy/*.md 2>/dev/null)
+docs=$(ls docs/task/*.md docs/brainstorming/*.md docs/strategy/*.md 2>/dev/null)
 [ -z "$docs" ] && exit 0
 
 list=""
