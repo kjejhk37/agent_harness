@@ -36,18 +36,42 @@ Follow the `.md` Writing Rules in this file (one sentence per line, bullet point
     - Concrete fix approach, one sentence per line.
 ```
 
+### Issue Classification by Origin
+
+Split the findings into the following **three sections**, by where the issue came from.
+The point of the split is to separate what this branch is responsible for from pre-existing debt, so the user can judge each on its own terms.
+
+```
+### 1. 신규 이슈 (독립)
+### 2. 기존 이슈
+### 3. 신규 이슈 (기존 코드 연계)
+```
+
+1. **신규 이슈 (독립)** — caused by this branch's work, and independent of pre-existing code. A purely new defect, and the one class of finding this cycle must resolve.
+2. **기존 이슈** — not caused by this branch's work; it already existed. Not this branch's responsibility. **The user decides whether it is fixed at all and when** — report it and leave it alone otherwise. Without an instruction from the user it stays a candidate for a later cycle.
+3. **신규 이슈 (기존 코드 연계)** — caused by this branch's work, but entangled with pre-existing code, so fixing the new code alone will not resolve it. **The user decides here too**: report the finding and the scope of the change it would require, and proceed only after the user's decision. This is the point where the scope quietly expands if the rule is not followed.
+
+Keep the severity grade on every finding in every section — the classification is a second axis, not a replacement for severity.
+Write `없음` under a section that has no findings; never drop the section.
+
+Splitting into sections means the findings are no longer ordered by severity in a single list. That is accepted, because reading "what this branch is responsible for" as one block matters more here.
+
 Present the Stage 1 report to the user and request feedback before proceeding to Stage 2.
 
 ### Resolving Findings
 
-Group findings into two buckets when presenting them.
+The origin classification above decides how a finding is handled.
 
-- **Immediately resolvable** — the finding is about code developed in this task, and fixing it does not require work beyond this task's already-developed scope. Request one blanket approval to resolve all of these together (no need to ask about each finding individually), then fix them directly, rebuild/retest, and mark them `[RESOLVED]` in the review document.
-- **Needs separate handling** — do not auto-resolve; call these out as their own distinct list when either:
-  1. The problem originates outside this task's developed scope (pre-existing code, another task's output).
-  2. Resolving it would require work beyond what this task developed (scope expansion).
+- **신규 이슈 (독립)** — immediately resolvable. Request one blanket approval to resolve all of these together (no need to ask about each finding individually), then fix them directly, rebuild/retest, and mark them `[RESOLVED]` in the review document.
+- **기존 이슈** and **신규 이슈 (기존 코드 연계)** — never auto-resolve. Both are the user's call: whether to fix, and when. Follow the "unexpected situation" rule in CLAUDE.md's Collaboration Principles — do not fix inline; present them and let the user decide whether to start a new task delegation cycle.
 
-  For these, follow the "unexpected situation" rule in CLAUDE.md's Collaboration Principles — do not fix inline; present them separately and let the user decide whether to start a new task delegation cycle.
+### Markers on Fixed Code
+
+Code fixed while resolving a finding gets a `[CLAUDE-EDIT]` marker, exactly as implementation code does.
+Modified or deleted original code is preserved as a `[CLAUDE-EDIT-OLD]` comment block, exactly as in the implementation stage.
+Both rules are defined in `.claude/commands/task_delegation.md` § Step 4.
+
+Without this, Marker Review would cover the implementation output but miss everything changed after the review, and the two would fall out of step.
 
 ---
 
@@ -91,12 +115,12 @@ Client          ServiceA         ServiceB
 
 ### HTML format
 
-Save as `docs/review/diagram_YYYYMMDD_HHMM.html`.
+Save as `data/docs/review/diagram_YYYYMMDD_HHMM.html`.
 Use inline CSS only — no external dependencies.
 
 ---
 
 ## Output
 
-Save the full review result (Stage 1 + Stage 2) as `docs/review/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the reviewed work cycle.
+Save the full review result (Stage 1 + Stage 2) as `data/docs/review/{slug}_YYYYMMDD_HHMM.md`, reusing the same `{slug}` as the reviewed work cycle.
 Write the relative path of the strategy .md that was reviewed at the top of the document.
