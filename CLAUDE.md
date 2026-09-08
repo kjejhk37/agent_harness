@@ -111,6 +111,7 @@ This is trigger-based, not autonomous — without a request, Claude does not com
 - Team Task Delegation Workflow: [`.claude/commands/team_task_delegation.md`](.claude/commands/team_task_delegation.md) — Cross-repo coordination between `platform` / `graphics` / `projects` repos. Independent of Task Delegation Workflow; only triggered from that workflow's Step 3 when a Strategy checklist item is tagged `[platform]` / `[graphics]` / `[mixed]`.
 - Git Workflow: [`.claude/commands/git_workflow.md`](.claude/commands/git_workflow.md) — Reference only if the file has been written.
 - Dependency Evaluation: [`.claude/commands/dependency_eval.md`](.claude/commands/dependency_eval.md)
+- Guideline Delegation: [`.claude/commands/guideline_delegation.md`](.claude/commands/guideline_delegation.md) — Workflow for changing this repository's own guidelines (`CLAUDE.md`, `.claude/commands/*.md`, `.claude/hooks/*`). Guideline changes do **not** go through the Task Delegation Workflow: this repo holds no code, so Before/After code, `[CLAUDE-EDIT]` markers, Marker Review, and unit tests have nothing to act on. Its distinctive step is the impact sweep (cross-references, silent dependencies, hook paths, already-written documents) and the submodule propagation that follows.
 - Diagram Delegation: [`.claude/commands/diagram_delegation.md`](.claude/commands/diagram_delegation.md) — User-triggered workflow that produces a dated architecture-diagram document (`docs/DiagramDelegation/diagrams/{slug}_YYYYMMDD_HHMM.md`), with an optional macro architecture review as Step 3. Independent of Task Delegation Workflow; never runs automatically.
 
 ---
@@ -200,12 +201,80 @@ docs/
 
   DiagramDelegation/
     diagrams/
+
+  GuidelineDelegation/
+    changes/
 ```
 
 - The Task Delegation folders are **not** nested under a `TaskDelegation/` folder. They stay flat under `docs/` because `.claude/hooks/workflow-doc-reminder.sh` reads `docs/task`, `docs/brainstorming`, and `docs/strategy` directly on every turn. Nesting them would silently break that reminder.
 - `dependency/` stays directly under `docs/`, not nested under any delegator folder — a dependency evaluation is project/repo-scoped rather than tied to one delegator's workflow.
 - `TeamTaskDelegation/` holds only the cross-repo request/response exchange (`inbox/`/`outbox/`). Once a request is received, the target repo processes it as its own Task Delegation cycle (task/brainstorming/strategy/commit/review/marker_review) — that content lives in the flat folders above, never duplicated under `TeamTaskDelegation/`, regardless of whether the cycle was triggered by a normal user request or by an inbound request document.
 - `DiagramDelegation/diagrams/` holds only the dated diagram snapshots that `diagram_delegation.md` produces. It is never archived — see Document Archiving below.
+- `GuidelineDelegation/changes/` holds only the dated records that `guideline_delegation.md` produces — what a guideline change touched, what the impact sweep found, and what was deliberately left alone. It is never archived, for the same reason the diagram snapshots are not: a rule's rationale is asked about long after the change that introduced it.
+
+---
+
+# Ticket — Cross-Repo Correlation Key
+
+Every work cycle carries a **ticket**: one identifier that stays attached to the cycle from its task document through to the `[CLAUDE-EDIT]` markers left in the code.
+
+A ticket is a correlation key, not an issue tracker.
+It carries no status, no assignee, and no priority — those belong to the workflow documents themselves.
+
+Format:
+
+```
+{YYYYMMDD_HHMM}-{repo}-{slug}
+20260908_2100-wot-renderer_split
+```
+
+- `{YYYYMMDD_HHMM}` is the moment the task document is written. The timestamp comes first because `team_task_delegation.md` Step 3 sorts request branches by name to get arrival order — moving it out of the first position would silently break that sort.
+- `{repo}` is this repository's alias from the table below. It is what makes the ticket unique without a central allocator, since consuming repos cannot see each other at allocation time.
+- `{slug}` is the same slug the cycle's documents use (see Document Naming Convention below). It is what makes a marker readable — a ticket sitting in a code comment must say what the change was.
+
+**The ticket is allocated exactly once, at the cycle's first step, and never re-derived.**
+
+That first step is `task_delegation.md` Step 1 for code work, and `guideline_delegation.md` Step 1 for a change to this repository's own guidelines.
+
+Step 1 is the only step that runs exactly once per cycle.
+Step 2 loops until approval, Step 3 can send the cycle back to Step 2, and Marker Review's Route B sends it back to Step 3 with no cap on repeats.
+An identifier allocated at a re-entrant step would drift between rounds, and drifting names are exactly what makes markers impossible to aggregate.
+
+**A target repo inherits the ticket. It never allocates one.**
+
+`team_task_delegation.md` Step 3 treats the request document as the Step 1 (Task) input to the target repo's own cycle, so the target repo starts at Step 2 and writes no task document of its own.
+The ticket therefore has a single point of allocation, on the requester's side, and the same key spans both repos.
+Markers the target repo leaves carry the requester's alias — that is the point, since the marker records which request caused the code.
+
+Sequential ticket numbers are deliberately not used.
+A counter needs an allocator, and this repository is a submodule with no server and no shared state, so consuming repos would collide.
+GitHub issue numbers are per-repo, which makes `#12` ambiguous across the chain.
+
+## Repo Aliases
+
+| Alias | Repository |
+|---|---|
+| `platform` | platform |
+| `graphics` | graphics |
+| `wot` | World-of-Tank-imitation-Refactoring |
+| `site` | kjejhk37.github.io |
+| `workflow` | this repository (`claude_workflow` / `agent_harness`) — used by `guideline_delegation.md` |
+
+A consuming repository not listed here declares its own alias in its own `CLAUDE.md`.
+The alias is lowercase, short, and unique across the chain.
+The same alias is used in the ticket and in the `request/` branch name — they are the same string.
+
+## Where the Ticket Appears
+
+- The `Ticket` field at the top of every workflow document in the cycle.
+- The `request/` branch name, and the request and response document filenames, in `team_task_delegation.md`.
+- Every `[CLAUDE-EDIT]` marker the cycle produces.
+- The checklist item in the requester's strategy document that the request unblocks.
+
+**Never use the ticket as a stand-in in prose.**
+
+Writing "the change from 20260908_2100-wot-renderer_split" in place of naming what the change was violates the stand-in ban in § .md Writing Rules above.
+The ticket belongs in filenames, header fields, and markers — places where a reader is looking a cycle up, not reading a sentence.
 
 ---
 
@@ -216,6 +285,7 @@ Every workflow document (task, brainstorming, strategy, commit, review, marker r
 - Derive `{slug}` from the Task Document's Purpose when writing the task .md.
 - Reuse the identical `{slug}` for every later-stage document (brainstorming/strategy/commit/review/marker_review) in the same work cycle, so cross-reference links and the archive folder name stay traceable to one cycle at a glance.
 - The archive folder name reuses the same `{slug}`: `docs/archive/{slug}_YYYYMMDD/`.
+- Write the cycle's ticket as a `Ticket` field at the top of every one of these documents. The filename carries the slug; the header carries the full ticket, so a document found on its own still names the repo and the moment it belongs to.
 
 ---
 
@@ -238,6 +308,8 @@ docs/archive/{slug}_YYYYMMDD/
   review/{slug}_YYYYMMDD_HHMM.md          (if a code_review.md report was written for this cycle)
   marker_review/{slug}_YYYYMMDD_HHMM.md   (if a marker_review.md feedback document was written for this cycle)
 ```
+
+`docs/GuidelineDelegation/changes/` is excluded from archiving, as is `docs/DiagramDelegation/diagrams/`.
 
 `docs/dependency/` is excluded from archiving. Unlike task/brainstorming/strategy/commit/review, a dependency evaluation documents a decision that stays relevant for as long as the project depends on that library — not just for the cycle that introduced it. Keep `docs/dependency/*.md` at its top-level location permanently, as a cumulative project-wide registry, even after the cycle that produced it is archived.
 

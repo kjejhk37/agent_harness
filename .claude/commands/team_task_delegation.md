@@ -24,14 +24,15 @@ If any item is `[platform]` / `[graphics]` / `[mixed]`, pause Step 3 and follow 
 
 In the requester's local checkout of the target repo's submodule:
 
-- Create a branch named `request/{YYYYMMDD_HHMM}-{requester}-{slug}` (e.g. `request/20260818_1430-wot-inventory-sync`).
-- The timestamp prefix is required — it is what lets the target repo process requests in arrival order later (Step 3).
+- Create a branch named `request/{ticket}` (e.g. `request/20260818_1430-wot-inventory-sync`), using the ticket allocated in `task_delegation.md` Step 1.
+- The branch name is the ticket verbatim, not a second naming scheme. See `claude_workflow/CLAUDE.md` § Ticket.
+- The ticket's timestamp prefix is required — it is what lets the target repo process requests in arrival order later (Step 3).
 
 ---
 
 ## Step 2 — Write and Push the Request Document
 
-On the request branch, commit a request document at `docs/TeamTaskDelegation/inbox/{YYYYMMDD_HHMM}_{requester}_request.md`, then push the branch to the target repo's own origin.
+On the request branch, commit a request document at `docs/TeamTaskDelegation/inbox/{ticket}_request.md`, then push the branch to the target repo's own origin.
 
 Required fields:
 
@@ -53,14 +54,15 @@ There is no separate queue file. The queue is simply the set of unmerged `reques
 git branch --list 'request/*' --sort=refname
 ```
 
-Because branch names are timestamp-prefixed, this sort order is arrival order. Process the oldest unmerged request first.
+Because a ticket begins with its timestamp, and the branch name is the ticket, this sort order is arrival order. Process the oldest unmerged request first.
 
 For the request being processed:
 
 - Treat the request document as the Step 1 (Task) input to the target repo's own `task_delegation.md` cycle.
+- **Reuse the request's ticket. Do not allocate a new one.** Because the request document stands in for Step 1, the target repo writes no task document and therefore has no allocation point of its own. Every document and every `[CLAUDE-EDIT]` marker the target repo produces for this request carries the requester's ticket, which is what lets the resulting code be traced back to the request.
 - Run Step 2 (Brainstorming) normally. **The target repo's own CLAUDE.md principles take priority over the request's contents** — the requester describes a need, not an implementation.
 - Scope Step 3/4 down to designing and implementing only the public abstraction (interface/contract), not a full concrete feature. This is what gets handed back — the requester does the concrete integration on its own side.
-- When the abstraction is finalized, commit a response document on the same branch at `docs/TeamTaskDelegation/outbox/{YYYYMMDD_HHMM}_{requester}_response.md`.
+- When the abstraction is finalized, commit a response document on the same branch at `docs/TeamTaskDelegation/outbox/{ticket}_response.md`.
 
 Required response fields:
 

@@ -83,10 +83,10 @@ The user either **approves** the marker or **gives feedback** on it.
 Mark the approval **in the code**, appended after the marker.
 
 ```
-[CLAUDE-EDIT] (작업명) [승인됨]
+[CLAUDE-EDIT] (티켓명) [승인됨]
 ```
 
-- Only `[승인됨]` is added — the `[CLAUDE-EDIT] (작업명)` marker itself is untouched.
+- Only `[승인됨]` is added — the `[CLAUDE-EDIT] (티켓명)` marker itself is untouched.
 - Because the approval is a fixed string, it can be found and stripped mechanically. Nothing else needs to be parsed.
 
 When **every** marker in the cycle is approved, do the following as one pass.

@@ -35,6 +35,7 @@ Task Delegation 사이클이 만드는 문서는 다음 폴더에 들어간다.
 - `TeamTaskDelegation/inbox/` : 다른 저장소에서 들어온 요청 문서.
 - `TeamTaskDelegation/outbox/` : 이쪽에서 내보낸 응답 문서.
 - `DiagramDelegation/diagrams/` : 날짜별 다이어그램 스냅샷.
+- `GuidelineDelegation/changes/` : 지침 변경 기록. 무엇을 왜 바꿨고 영향 조사에서 무엇을 찾았는지.
 
 ---
 
@@ -56,6 +57,11 @@ Task Delegation 사이클이 만드는 문서는 다음 폴더에 들어간다.
 스냅샷이 날짜별로 쌓여야 구조 변화가 diff 로 드러난다.
 기존 스냅샷을 고치지 않고 새 날짜 파일을 추가한다.
 
+**`GuidelineDelegation/changes/` 도 아카이브하지 않는다.**
+
+규칙이 왜 그렇게 생겼는지는 그 규칙을 만든 사이클이 끝난 한참 뒤에 되묻게 된다.
+규칙 본문에 다 쓸 수 없는 배경과 버린 대안이 여기 남는다.
+
 **`TeamTaskDelegation/` 에는 주고받은 요청·응답 문서만 둔다.**
 
 요청을 받은 저장소가 그것을 처리하는 과정은 그 저장소 자신의 Task Delegation 사이클이다.
@@ -69,7 +75,7 @@ Task Delegation 사이클이 만드는 문서는 다음 폴더에 들어간다.
 - Task Delegation 문서 9종은 `docs/` 바로 아래 평평하게 두고, Team Task Delegation 과 Diagram Delegation 은 자기 폴더를 갖는다.
 - 폴더는 미리 만들지 않고 문서를 처음 쓸 때 만든다. 위 목록은 자리의 지도다.
 - `docs/task`, `docs/brainstorming`, `docs/strategy` 경로는 훅이 직접 읽으므로 한 겹 더 감싸면 안 된다.
-- `dependency/` 와 `DiagramDelegation/diagrams/` 는 아카이브 대상이 아니다.
+- `dependency/` 와 `DiagramDelegation/diagrams/` 와 `GuidelineDelegation/changes/` 는 아카이브 대상이 아니다.
 - 구조의 정본은 `CLAUDE.md` 의 `# Docs Directory Layout` 절이고, 이 문서는 안내용이다.
 
 ## 사용자 결정 사항
