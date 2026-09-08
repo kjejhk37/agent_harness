@@ -87,6 +87,19 @@ Write it as the very last line of the reply, after all other content, in this ex
 - When there is nothing in progress, write `**[현재 작업]** 없음 — 다음 지시 대기`.
 - This applies to every reply without exception, including replies that only ask a question or report an error.
 - Never expand it into a status report — a fixed one-line shape is the entire point.
+# Git — Trigger-Based
+
+When the user asks Claude to commit or push (e.g. "push 해줘", "커밋해줘", "올려줘"), Claude runs the full `git add` / `git commit` / `git push` sequence itself, immediately.
+
+- Do not decline, do not substitute it with "here are the commands, run them yourself", do not re-ask "are you sure" for an ordinary docs/code push.
+- The request is the trigger and the authorization.
+
+This is trigger-based, not autonomous — without a request, Claude does not commit/push on its own; it finishes the file changes and says they are ready to push (no wall of hand-off commands).
+
+- Commit straight to `main` — the established pattern in every repo here; do not branch first unless asked.
+- End commit messages with `Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>`.
+- Submodule chains: push the dependency repo first, then `git submodule update --remote` and commit the pointer in each consumer.
+- Refuse only genuinely dangerous ops (history rewrite, force-push, remote branch deletion) without explicit confirmation.
 
 ---
 
@@ -95,8 +108,24 @@ Write it as the very last line of the reply, after all other content, in this ex
 - Task Delegation Workflow: [`.claude/commands/task_delegation.md`](.claude/commands/task_delegation.md)
 - Code Review: [`.claude/commands/code_review.md`](.claude/commands/code_review.md)
 - Marker Review: [`.claude/commands/marker_review.md`](.claude/commands/marker_review.md) — runs after the code review, an extension of the Task Delegation workflow.
+- Team Task Delegation Workflow: [`.claude/commands/team_task_delegation.md`](.claude/commands/team_task_delegation.md) — Cross-repo coordination between `platform` / `graphics` / `projects` repos. Independent of Task Delegation Workflow; only triggered from that workflow's Step 3 when a Strategy checklist item is tagged `[platform]` / `[graphics]` / `[mixed]`.
 - Git Workflow: [`.claude/commands/git_workflow.md`](.claude/commands/git_workflow.md) — Reference only if the file has been written.
 - Dependency Evaluation: [`.claude/commands/dependency_eval.md`](.claude/commands/dependency_eval.md)
+- Diagram Delegation: [`.claude/commands/diagram_delegation.md`](.claude/commands/diagram_delegation.md) — User-triggered workflow that produces a dated architecture-diagram document (`data/docs/DiagramDelegation/diagrams/{slug}_YYYYMMDD_HHMM.md`), with an optional macro architecture review as Step 3. Independent of Task Delegation Workflow; never runs automatically.
+
+---
+
+# Cross-Repo Roles (Team Task Delegation)
+
+This repository's consuming projects form a one-directional dependency chain: `platform → graphics → projects`, linked via git submodules (`projects` submodules `graphics` and `platform`; `graphics` submodules `platform`).
+
+A repo's role in Team Task Delegation depends on which cross-repo item is being handled, not on which "department" it is — the same repo can be a requester in one exchange and a target in another.
+
+- `platform` — always a target, never a requester (nothing is upstream of it).
+- `graphics` — a target when `projects` requests from it; a requester when it needs `platform` to complete a `[mixed]` item (see `team_task_delegation.md` Step 5).
+- `projects` — always a requester toward `platform`/`graphics`, never a target (nothing is downstream of it).
+
+Whichever role applies for a given exchange, follow `team_task_delegation.md` Steps 1–4 for the requester side and Step 3 for the target side.
 
 ---
 
@@ -148,6 +177,38 @@ Every function and class comment must include the following.
 
 ---
 
+# Docs Directory Layout
+
+The Task Delegation documents sit directly under `data/docs/`.
+The other delegators get their own folder there, so content is separated by which delegator produced it.
+
+```
+data/docs/
+  task/
+  brainstorming/
+  strategy/
+  commit/
+  review/
+  marker_review/
+  architecture/                            (hand-maintained architecture notes tied to this repo's strategies)
+  archive/{slug}_YYYYMMDD/
+  dependency/                              (see Dependency Evaluation below)
+
+  TeamTaskDelegation/
+    inbox/
+    outbox/
+
+  DiagramDelegation/
+    diagrams/
+```
+
+- The Task Delegation folders are **not** nested under a `TaskDelegation/` folder. They stay flat under `data/docs/` because `.claude/hooks/workflow-doc-reminder.sh` reads `data/docs/task`, `data/docs/brainstorming`, and `data/docs/strategy` directly on every turn. Nesting them would silently break that reminder.
+- `dependency/` stays directly under `data/docs/`, not nested under any delegator folder — a dependency evaluation is project/repo-scoped rather than tied to one delegator's workflow.
+- `TeamTaskDelegation/` holds only the cross-repo request/response exchange (`inbox/`/`outbox/`). Once a request is received, the target repo processes it as its own Task Delegation cycle (task/brainstorming/strategy/commit/review/marker_review) — that content lives in the flat folders above, never duplicated under `TeamTaskDelegation/`, regardless of whether the cycle was triggered by a normal user request or by an inbound request document.
+- `DiagramDelegation/diagrams/` holds only the dated diagram snapshots that `diagram_delegation.md` produces. It is never archived — see Document Archiving below.
+
+---
+
 # Document Naming Convention
 
 Every workflow document (task, brainstorming, strategy, commit, review, marker review) is named `{slug}_YYYYMMDD_HHMM.md`, where `{slug}` is a short content summary of the work cycle's topic (e.g. `렌더러_분기`, `main진입점_설정`) — never the literal word "summary".
@@ -179,6 +240,8 @@ data/docs/archive/{slug}_YYYYMMDD/
 ```
 
 `data/docs/dependency/` is excluded from archiving. Unlike task/brainstorming/strategy/commit/review, a dependency evaluation documents a decision that stays relevant for as long as the project depends on that library — not just for the cycle that introduced it. Keep `data/docs/dependency/*.md` at its top-level location permanently, as a cumulative project-wide registry, even after the cycle that produced it is archived.
+
+`data/docs/architecture/` and `data/docs/DiagramDelegation/diagrams/` are excluded from archiving for the same reason. The former holds hand-maintained architecture notes; the latter holds the dated diagram snapshots produced by `diagram_delegation.md`. Both are permanent reference material — the diagram snapshots in particular are a cumulative time series, where each run adds a new dated file and never overwrites or archives an older one, so that silent architectural drift stays visible in diff.
 
 A cycle is considered complete when all of the following conditions are met.
 

@@ -4,6 +4,14 @@ When a task is delegated by the user, follow the steps below in order.
 
 ---
 
+## Stage Boundaries
+
+- Task (Step 1): Problem definition only. Do not include solutions, ideas, or code-change methods.
+- Brainstorming (Step 2): Idea-level discussion only. Reading the current code (read-only) to judge whether an idea is feasible is allowed. Do not modify code or design concrete file/function-level changes here — that belongs to Strategy (Step 3).
+- Strategy (Step 3): Concretize how to apply the ideas confirmed in Brainstorming to the code. Do not originate new ideas/alternatives at this stage — if a new idea is needed, go back to Step 2.
+
+---
+
 ## Step 1 — Write the Task Document
 
 Request answers to the following items from the user and save the completed content as `data/docs/task/{slug}_YYYYMMDD_HHMM.md`, where `{slug}` is a short content summary of the task's Purpose (see the Document Naming Convention in `claude_workflow/CLAUDE.md`) — not the literal word "summary". Reuse this same `{slug}` for every later-stage document in this work cycle (Steps 2, 3, 5, plus the code review and marker review documents).
@@ -26,9 +34,10 @@ Write a brainstorming draft and save it as `data/docs/brainstorming/{slug}_YYYYM
 
 The purpose of brainstorming is as follows.
 
-- Clarify the user's goals and refine the implementation strategy.
+- Clarify the user's goals.
 - Identify risks in the implementation process in advance and discuss how to resolve them.
 - Explore solutions to achieve the user's goals.
+- Check the current code state (read-only) to judge whether an idea is feasible — do not design concrete file/function-level changes here (see Stage Boundaries above).
 
 The brainstorming document must include the following sections, in this order.
 
@@ -63,6 +72,8 @@ The strategy document must include an implementation checklist.
 - Write each item in `[ ]` format.
 - Break the checklist down into the smallest implementable units.
 - Write the concrete code change for every item alongside it, as **Before / After**.
+- If this repo has cross-repo dependencies (see `CLAUDE.md` § Cross-Repo Roles), tag each item `[self]` / `[platform]` / `[graphics]` / `[mixed]` and resolve every non-`[self]` item via `.claude/commands/team_task_delegation.md` before finalizing this document.
+- When a checklist section (e.g. `### Phase N — <설명>`) includes a change to a data schema (save file format, config schema, network protocol, DB schema, etc.), add one **schema** Before/After comparison for that section as a whole, showing the old and new schema definitions. This is one comparison per section, in addition to the per-item code Before/After below — the two are different things, and neither replaces the other. Sections with no schema change need no schema comparison.
 
 ### Before / After for Every Checklist Item
 
