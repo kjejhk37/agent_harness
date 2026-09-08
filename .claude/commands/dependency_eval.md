@@ -66,4 +66,4 @@ Update to `[x] Verified` when the task is complete and the feature is confirmed.
 
 ## Output
 
-Save the evaluation result as `docs/dependency/library-name_YYYYMMDD.md`.
+Save the evaluation result as `data/docs/dependency/library-name_YYYYMMDD.md`.

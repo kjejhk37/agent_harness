@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/workflow-doc-reminder.sh\"",
+            "timeout": 10,
+            "statusMessage": "워크플로 문서 확인 중"
+          }
+        ]
+      }
+    ]
+  }
+}

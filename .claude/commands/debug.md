@@ -7,7 +7,7 @@ This is distinct from unit testing — the goal is the fastest possible reproduc
 
 ## Step 1 — Identify the Issue
 
-Read the target issue from the commit report in `docs/commit/`.
+Read the target issue from the commit report in `data/docs/commit/`.
 Confirm the issue grade and description with the user before proceeding.
 
 ---
