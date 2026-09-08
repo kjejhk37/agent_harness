@@ -75,19 +75,40 @@ The strategy document must include an implementation checklist.
 - If this repo has cross-repo dependencies (see `CLAUDE.md` § Cross-Repo Roles), tag each item `[self]` / `[platform]` / `[graphics]` / `[mixed]` and resolve every non-`[self]` item via `.claude/commands/team_task_delegation.md` before finalizing this document.
 - When a checklist section (e.g. `### Phase N — <설명>`) includes a change to a data schema (save file format, config schema, network protocol, DB schema, etc.), add one **schema** Before/After comparison for that section as a whole, showing the old and new schema definitions. This is one comparison per section, in addition to the per-item code Before/After below — the two are different things, and neither replaces the other. Sections with no schema change need no schema comparison.
 
-### Before / After for Every Checklist Item
+### What Every Checklist Item Must Carry
 
 A checklist item states *what* will be done.
-Before / After states *how the code will actually change*.
-Both are required, because the point of Step 3 is to agree on the **level and depth of the code change** before any code is written — not merely to agree on the intent.
+That alone is not enough to approve — the user also has to see *how the code will change* and *why*.
+
+Every checklist item therefore carries the following **four** things, the same four Marker Review presents after implementation.
+
+1. **Before / After** — real code blocks, with the changed lines marked.
+2. **현재 코드의 목적 및 기능** — what the code exists for and what it does today, before the change.
+3. **변경 후 코드의 목적 및 기능** — what it will exist for and what it will do after the change.
+4. **수정 이유** — the grounds for moving from the current function to the planned one.
+
+Items 2 and 3 sit side by side on purpose.
+The user must be able to judge whether **the function is preserved or changed as intended**, not just whether the diff looks reasonable.
+
+This is deliberately symmetric with Marker Review: the same four things are agreed **before** implementation and re-checked **after** it, so the two gates can be compared directly.
+
+#### Writing the Before / After
 
 - Write Before / After as **real code blocks**, not a prose summary of what will change.
 - Quote the current code as it actually exists — read the target file before writing the item.
 - Excerpt only the minimum range that changes, plus the surrounding context needed to judge it. Do not paste whole files.
 - Annotate the changed lines inline with `<-- 추가` / `<-- 삭제` / `<-- 수정` so the user can see at a glance where the change lands.
-- When there is no Before (a new file, a new function), write Before as `(신규 파일 — 기존 코드 없음)` and apply `<-- 추가` to the whole After block.
+- When there is no Before (a new file, a new function), write Before as `(신규 파일 — 기존 코드 없음)` and apply `<-- 추가` to the whole After block. In that case write item 2 as `(신규 — 기존 코드 없음)`.
+- When the item deletes code, write item 3 as `(삭제됨 — 남는 코드 없음)`.
 
-Example of one checklist item.
+#### Writing the Reason
+
+- State the reason as the concrete problem in the current code, not as a restatement of the change.
+  - Good: 호출부 3곳에 같은 판별 로직이 중복되어 포맷 추가 시 3곳을 모두 고쳐야 한다.
+  - Bad: 분기 함수를 추출하기 위해서.
+- One sentence per line, as with every other document here.
+
+#### Example of One Checklist Item
 
 ```
 - [ ] 렌더러 분기 함수 추출
@@ -102,15 +123,28 @@ After
   def render(doc, fmt):
       renderer = select_renderer(fmt)      <-- 추가
       return renderer.run(doc)             <-- 추가
+
+현재 코드의 목적 및 기능
+  단일 렌더 경로로 모든 포맷을 처리한다.
+  포맷 판별을 호출부에서 수행한다.
+
+변경 후 코드의 목적 및 기능
+  포맷별 렌더러를 선택하는 분기로 바뀐다.
+  판별 책임이 select_renderer 로 이동한다.
+
+수정 이유
+  호출부 3곳에 같은 판별 로직이 중복되어 있다.
+  포맷을 추가할 때 3곳을 모두 고쳐야 한다.
 ```
 
 ### Item-by-Item Approval
 
 **The strategy document is approved one checklist item at a time — not as a whole document.**
 
-- Present one checklist item together with its Before / After, and ask the user to approve it or give feedback.
+- Present one checklist item together with all four of its parts — Before / After, 현재 코드의 목적 및 기능, 변경 후 코드의 목적 및 기능, 수정 이유 — and ask the user to approve it or give feedback.
+- Never present the code change without the reason. An item shown as a diff alone is not approvable.
 - Present **exactly one item per turn**. Do not batch several items into one question, even when they look related.
-- When the user gives feedback instead of approval, revise that item's Before / After and present it again.
+- When the user gives feedback instead of approval, revise that item and present it again.
 - When an item is approved, mark it `(승인됨)` in front of the item text and remove it from `## 사용자 확인 사항`.
 
 ```
@@ -125,7 +159,7 @@ After
 
 The strategy document ends with the following four sections, in this order, as the very last content in the file.
 
-1. `## 체크리스트 요약` — the checklist items only, listed flat with no Before / After attached. A reader who wants the plan without the code reads this one section.
+1. `## 체크리스트 요약` — the checklist items only, listed flat with no Before / After and no reason attached. A reader who wants the plan without the code reads this one section.
 2. `## 요약` — states what will be built and what the approval criteria are, so a reader who skips the checklist still gets the verdict.
 3. `## 사용자 결정 사항` — carry every decision made during brainstorming forward into this list, so the strategy document stands on its own without re-reading the brainstorming .md.
 4. `## 사용자 확인 사항` — the checklist items **not yet approved by the user**, as a numbered list. This section is the unapproved-item tracker: an item leaves it the moment it is approved, and `없음` means every item is approved and Step 4 may begin.
