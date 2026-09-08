@@ -179,18 +179,20 @@ Each time an item is completed, update the corresponding checklist item in the s
 **Every place the code is modified, deleted, or added gets a marker.**
 
 ```
+[CLAUDE-EDIT] (작업명)
 [CLAUDE-EDIT] (티켓명)
 ```
 
-- Use the cycle's ticket, allocated in Step 1 (see `claude_workflow/CLAUDE.md` § Ticket). There is no fallback — every cycle has a ticket, so a marker is never written with anything else.
+- Use the ticket name when a ticket exists (see `claude_workflow/CLAUDE.md` § Ticket). Otherwise use the work cycle's `{slug}` as the 작업명.
+  - A cycle run through `task_delegation.md` always has a ticket, allocated in Step 1. The 작업명 form covers a change made outside a delegation cycle — a hotfix or a one-off edit — which still needs a marker but has no cycle to draw a ticket from.
   - A consistent name is what makes the markers countable later — if the name drifts from session to session, the markers cannot be aggregated mechanically. Allocating at Step 1 is what holds the name still: Step 1 runs once per cycle, while Step 3 and Marker Review's Route B are re-entered without limit.
 - Attach one marker per **changed logical block** — a function, a method, a conditional branch. Never per line.
   - One marker is one round trip during Marker Review, so the attachment unit decides the review cost.
   - Which exact lines changed is shown in Marker Review's code block, not by the marker's position.
 - Write the marker as the target language's **single-line comment**.
-  - `// [CLAUDE-EDIT] (20260908_2100-wot-renderer_split)` — C, C++, C#, Java, JavaScript, TypeScript, Rust, Go.
-  - `# [CLAUDE-EDIT] (20260908_2100-wot-renderer_split)` — Python, Ruby, Shell, YAML.
-  - `<!-- [CLAUDE-EDIT] (20260908_2100-wot-renderer_split) -->` — HTML, XML, Markdown.
+  - `// [CLAUDE-EDIT] (작업명)` — C, C++, C#, Java, JavaScript, TypeScript, Rust, Go.
+  - `# [CLAUDE-EDIT] (작업명)` — Python, Ruby, Shell, YAML.
+  - `<!-- [CLAUDE-EDIT] (작업명) -->` — HTML, XML, Markdown.
   - A single-line comment is required because the markers are searched and counted one line at a time. A block comment spanning several lines breaks that.
 - **The marker is permanent.** It is not removed when the code review finishes, and it is not removed when the reported issues are resolved.
   - This is deliberate: the markers exist to track, aggregate, and audit AI-written code after the fact, so they outlive the work cycle that created them.
@@ -201,12 +203,12 @@ Each time an item is completed, update the corresponding checklist item in the s
 **When code is modified or deleted, keep the original code as a comment instead of erasing it.**
 
 ```
-// [CLAUDE-EDIT-OLD] (20260908_2100-wot-renderer_split)
+// [CLAUDE-EDIT-OLD] (작업명)
 //   if fmt == "html":
 //       return HtmlRenderer().run(doc)
 ```
 
-- Start the preserved block with `[CLAUDE-EDIT-OLD] (티켓명)`, then place the commented-out original code below it.
+- Start the preserved block with `[CLAUDE-EDIT-OLD] (작업명)`, then place the commented-out original code below it.
 - This is what lets Marker Review show "원래 코드의 목적 및 기능" from the file itself, and it is what makes a pure deletion reviewable at all — a deletion with nothing left behind has nothing to attach a marker to.
 - The distinct `[CLAUDE-EDIT-OLD]` tag separates these blocks from comments a human wrote, so the cleanup can tell them apart and never deletes a human's comment by mistake.
 - Remove the whole preserved block once the change is approved in Marker Review.

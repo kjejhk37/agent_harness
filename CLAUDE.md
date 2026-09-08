@@ -111,7 +111,7 @@ This is trigger-based, not autonomous — without a request, Claude does not com
 - Team Task Delegation Workflow: [`.claude/commands/team_task_delegation.md`](.claude/commands/team_task_delegation.md) — Cross-repo coordination between `platform` / `graphics` / `projects` repos. Independent of Task Delegation Workflow; only triggered from that workflow's Step 3 when a Strategy checklist item is tagged `[platform]` / `[graphics]` / `[mixed]`.
 - Git Workflow: [`.claude/commands/git_workflow.md`](.claude/commands/git_workflow.md) — Reference only if the file has been written.
 - Dependency Evaluation: [`.claude/commands/dependency_eval.md`](.claude/commands/dependency_eval.md)
-- Guideline Delegation: [`.claude/commands/guideline_delegation.md`](.claude/commands/guideline_delegation.md) — Workflow for changing this repository's own guidelines (`CLAUDE.md`, `.claude/commands/*.md`, `.claude/hooks/*`). Guideline changes do **not** go through the Task Delegation Workflow: this repo holds no code, so Before/After code, `[CLAUDE-EDIT]` markers, Marker Review, and unit tests have nothing to act on. Its distinctive step is the impact sweep (cross-references, silent dependencies, hook paths, already-written documents) and the submodule propagation that follows.
+- Guideline Delegation: [`.claude/commands/guideline_delegation.md`](.claude/commands/guideline_delegation.md) — Workflow for changing this repository's own guidelines (`CLAUDE.md`, `.claude/commands/*.md`, `.claude/hooks/*`). Guideline changes do **not** go through the Task Delegation Workflow: this repo holds no code, so Before/After code, `[CLAUDE-EDIT]` markers, Marker Review, and unit tests have nothing to act on. Its distinctive steps are the Step 2 sweep for rule exceptions and silent risks, and the Step 4 submodule propagation that follows.
 - Diagram Delegation: [`.claude/commands/diagram_delegation.md`](.claude/commands/diagram_delegation.md) — User-triggered workflow that produces a dated architecture-diagram document (`docs/DiagramDelegation/diagrams/{slug}_YYYYMMDD_HHMM.md`), with an optional macro architecture review as Step 3. Independent of Task Delegation Workflow; never runs automatically.
 
 ---
@@ -257,10 +257,9 @@ GitHub issue numbers are per-repo, which makes `#12` ambiguous across the chain.
 | `platform` | platform |
 | `graphics` | graphics |
 | `wot` | World-of-Tank-imitation-Refactoring |
-| `site` | kjejhk37.github.io |
-| `workflow` | this repository (`claude_workflow` / `agent_harness`) — used by `guideline_delegation.md` |
 
-A consuming repository not listed here declares its own alias in its own `CLAUDE.md`.
+These are the aliases the repository already used before tickets existed — `platform` and `graphics` from Cross-Repo Roles above, `wot` from the `request/` branch example.
+A repository not listed here uses its own repository name until an alias is added to this table.
 The alias is lowercase, short, and unique across the chain.
 The same alias is used in the ticket and in the `request/` branch name — they are the same string.
 
@@ -268,7 +267,7 @@ The same alias is used in the ticket and in the `request/` branch name — they 
 
 - The `Ticket` field at the top of every workflow document in the cycle.
 - The `request/` branch name, and the request and response document filenames, in `team_task_delegation.md`.
-- Every `[CLAUDE-EDIT]` marker the cycle produces.
+- Every `[CLAUDE-EDIT]` marker the cycle produces. A change made outside a delegation cycle has no ticket and falls back to the 작업명 form — see `task_delegation.md` § Change Markers.
 - The checklist item in the requester's strategy document that the request unblocks.
 
 **Never use the ticket as a stand-in in prose.**
