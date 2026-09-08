@@ -210,7 +210,7 @@ docs/
 - `dependency/` stays directly under `docs/`, not nested under any delegator folder — a dependency evaluation is project/repo-scoped rather than tied to one delegator's workflow.
 - `TeamTaskDelegation/` holds only the cross-repo request/response exchange (`inbox/`/`outbox/`). Once a request is received, the target repo processes it as its own Task Delegation cycle (task/brainstorming/strategy/commit/review/marker_review) — that content lives in the flat folders above, never duplicated under `TeamTaskDelegation/`, regardless of whether the cycle was triggered by a normal user request or by an inbound request document.
 - `DiagramDelegation/diagrams/` holds only the dated diagram snapshots that `diagram_delegation.md` produces. It is never archived — see Document Archiving below.
-- `GuidelineDelegation/changes/` holds only the dated records that `guideline_delegation.md` produces — what a guideline change touched, what the impact sweep found, and what was deliberately left alone. It is never archived, for the same reason the diagram snapshots are not: a rule's rationale is asked about long after the change that introduced it.
+- `GuidelineDelegation/changes/` holds only the dated records that `guideline_delegation.md` produces — the problem and the proposed wording, what the sweep for rule exceptions and silent risks found, what a guideline change touched, and what was deliberately left alone. It is never archived, for the same reason the diagram snapshots are not: a rule's rationale is asked about long after the change that introduced it.
 
 ---
 
@@ -308,11 +308,9 @@ docs/archive/{slug}_YYYYMMDD/
   marker_review/{slug}_YYYYMMDD_HHMM.md   (if a marker_review.md feedback document was written for this cycle)
 ```
 
-`docs/GuidelineDelegation/changes/` is excluded from archiving, as is `docs/DiagramDelegation/diagrams/`.
-
 `docs/dependency/` is excluded from archiving. Unlike task/brainstorming/strategy/commit/review, a dependency evaluation documents a decision that stays relevant for as long as the project depends on that library — not just for the cycle that introduced it. Keep `docs/dependency/*.md` at its top-level location permanently, as a cumulative project-wide registry, even after the cycle that produced it is archived.
 
-`docs/architecture/` and `docs/DiagramDelegation/diagrams/` are excluded from archiving for the same reason. The former holds hand-maintained architecture notes; the latter holds the dated diagram snapshots produced by `diagram_delegation.md`. Both are permanent reference material — the diagram snapshots in particular are a cumulative time series, where each run adds a new dated file and never overwrites or archives an older one, so that silent architectural drift stays visible in diff.
+`docs/architecture/`, `docs/DiagramDelegation/diagrams/`, and `docs/GuidelineDelegation/changes/` are excluded from archiving for the same reason. The first holds hand-maintained architecture notes; the second holds the dated diagram snapshots produced by `diagram_delegation.md`; the third holds the dated guideline-change records produced by `guideline_delegation.md`. All three are permanent reference material — the diagram snapshots and the guideline records in particular are cumulative time series, where each run adds a new dated file and never overwrites or archives an older one, so that silent architectural drift, and the reasoning behind a rule, stay visible in diff.
 
 A cycle is considered complete when all of the following conditions are met.
 
